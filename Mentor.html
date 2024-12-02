@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor</title>
+    <style>
+    /* Estilos generales para el sitio */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9; /* Fondo claro para todo el sitio */
+    }
+
+     /* Pantalla de carga */
+     .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #007BFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+        }
+
+        /* Logo o texto */
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FFFF;
+
+        }
+
+        /* Animación de las bolitas */
+        .spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 15px;
+            height: 15px;
+            background-color: #FFFF;
+            border-radius: 50%;
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+
+        .dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        /* Animación para las bolitas */
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        /* Cuando se oculta la pantalla de carga */
+        .hidden {
+            display: none;
+        }
+
+    /* ==== HEADER ==== */
+    header {
+        background-color: #007bff; /* Azul principal */
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+    }
+
+    header a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+    }
+
+    header .logo {
+        font-weight: bold; /* Destaca el logo con negrita */
+    }
+
+    .logo-img {
+        width: 150px; /* Ajusta el tamaño del logo */
+        height: auto;
+    }
+
+   /* ==== MENÚ RESPONSIVO ==== */
+    .menu {
+        display: flex;
+        list-style: none;
+    }
+
+    .menu li {
+        margin-left: 20px;
+    }
+
+    .menu-toggle {
+        display: none; /* Ícono de menú oculto por defecto */
+        cursor: pointer;
+    }
+
+    .menu.active {
+        display: block;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: #007bff;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .menu.active li {
+        margin: 10px 0;
+        text-align: center;
+    }
+
+
+    /* Estilos para dispositivos móviles */
+    @media (max-width: 767px) {
+        .menu {
+            display: none; /* Oculta el menú en móviles hasta activarse */
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: block; /* Muestra el ícono de menú */
+            font-size: 30px;
+            color: white;
+        }
+    }
+    /* ==== MAIN BANNER ==== */
+    .main-banner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 20px;
+        background-color: #f9f9f9;
+        min-height: 100vh;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .main-banner .text-content {
+        max-width: 600px;
+    }
+
+    .main-banner h1 {
+        font-size: 2.5em;
+        margin: 0 0 20px;
+    }
+
+    .main-banner p {
+        font-size: 1.2em;
+        margin-bottom: 20px;
+    }
+
+    .main-banner .cta-btn {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .main-banner img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Ajustes para pantallas grandes */
+    @media (min-width: 768px) {
+        .main-banner {
+            flex-direction: row;
+            gap: 40px;
+        }
+
+        .main-banner .text-content {
+            text-align: left;
+            flex: 1;
+        }
+
+        .main-banner img {
+            flex: 1;
+            max-width: 50%;
+        }
+    }
+
+    /* ==== FEATURES ==== */
+    .features {
+        padding: 50px 20px;
+        background-color: #e9f5ff; /* Fondo azul claro */
+    }
+
+    .features h2 {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .features .feature-grid {
+        display: grid;
+        grid-template-columns: 1fr; /* Una columna por defecto */
+        gap: 20px;
+    }
+
+    .feature {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature img {
+        max-width: 40px;
+        margin-bottom: 20px;
+    }
+
+    .feature h3 {
+        margin-bottom: 10px;
+        color: #007bff;
+    }
+
+
+    /* Ajustes para pantallas medianas y grandes */
+    @media (min-width: 600px) and (max-width: 1199px) {
+        .features .feature-grid {
+            grid-template-columns: 1fr 1fr; /* 2 columnas */
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .features .feature-grid {
+            grid-template-columns: 1fr 1fr 1fr; /* 3 columnas */
+        }
+    }
+
+   /* ==== TESTIMONIALS ==== */
+    .testimonials {
+        padding: 50px 20px;
+    }
+
+    .testimonials h2 {
+        text-align: center;
+        font-size: 2em;
+        margin-bottom: 40px;
+        color: #303034;
+    }
+
+    .testimonial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Diseño flexible */
+        gap: 20px;
+    }
+
+    .testimonial {
+        background-color: #e9f5ff; /* Fondo azul claro */
+        border: 1px solid #007bff;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: left;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .testimonial img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .testimonial p {
+        font-size: 0.9em;
+        color: #303034;
+    }
+
+    .testimonial .university {
+        font-weight: bold;
+        font-size: 0.8em;
+        color: #707070;
+    }
+
+    .testimonial .user {
+        font-size: 0.9em;
+        font-weight: bold;
+        margin: 10px 0;
+        color: #303034;
+    }
+
+    .testimonial .stars {
+        color: #ff9800; /* Color naranja para las estrellas */
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    /* ==== MISSION & VISION ==== */
+    .mission-vision {
+        padding: 50px 20px;
+        background-color: #e9f5ff; /* Fondo azul claro */
+        text-align: center;
+    }
+
+    .mission-vision h2 {
+        font-size: 2em;
+        margin-bottom: 40px;
+        color: #303034;
+    }
+
+    .mission-vision-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .mission, .vision {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .mission h3, .vision h3 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+        color: #007bff;
+    }
+
+    .mission p, .vision p {
+        font-size: 1em;
+        color: #303034;
+        line-height: 1.6;
+    }
+
+    /* Ajustes para pantallas grandes */
+    @media (min-width: 768px) {
+        .mission-vision-content {
+            flex-direction: row;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .mission, .vision {
+            flex: 1;
+            max-width: 45%;
+        }
+    }
+
+    /* ==== TEAM ==== */
+    .team {
+        padding: 50px 20px;
+        background-color: #f9f9f9;
+        text-align: center;
+    }
+
+    .team h2 {
+        font-size: 2em;
+        margin-bottom: 40px;
+        color: #303034;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .team-card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+    }
+
+    .team-card img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover; /* Mantiene proporciones */
+        border-radius: 50%; /* Hace la imagen redonda */
+        margin-bottom: 15px;
+    }
+
+    .team-card h3 {
+        font-size: 1.2em;
+        margin-bottom: 5px;
+    }
+
+    .team-card p {
+        font-size: 0.9em;
+        color: #707070;
+        margin-bottom: 15px;
+    }
+
+    .social-links {
+    display: flex;
+    gap: 15px; /* Espaciado entre los iconos */
+    justify-content: center; /* Centra los iconos horizontalmente */
+    }
+
+  .social-links a {
+    display: inline-block;
+  }
+
+  .social-links img.social-icon {
+    width: 30px; /* Ajusta el tamaño del icono */
+    height: 30px;
+    object-fit: contain; /* Asegura que el ícono se mantenga en proporción */
+    transition: transform 0.3s ease; /* Efecto de escala */
+  }
+
+  /* Efecto al pasar el cursor */
+  .social-links img.social-icon:hover {
+    transform: scale(1.2); /* Aumenta el tamaño al pasar el cursor */
+  }
+  /*Empieza hoy*/
+  .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        /* Columna de texto */
+        .text-column {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+
+        .text-column h1 {
+            color: #007bff;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .text-column p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .text-column form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .text-column input {
+            flex: 1;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .text-column button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .text-column button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Columna de ícono */
+        .icon-column {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .icon-column img {
+            max-width: 150px;
+            height: auto;
+        }
+
+    /* ==== FOOTER ==== */
+    footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        footer nav {
+            margin-bottom: 15px;
+        }
+
+        footer nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 1rem;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        footer .social-icons a {
+            color: white;
+            margin: 0 5px;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+
+        footer .social-icons a:hover {
+            color: #0056b3;
+        }
+
+                /* Encabezado */
+                .pricing-header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Contenedor principal */
+        .pricing-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        /* Estilos para las tarjetas de precios */
+        .pricing-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+            flex: 1;
+            max-width: 300px;
+            min-width: 250px;
+        }
+
+        .pricing-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .pricing-card .price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .pricing-card p {
+            font-size: 0.9rem;
+            color: #777;
+            margin: 5px 0 20px;
+        }
+
+        .pricing-card .soon {
+            background-color: #007bff;
+            color: white;
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        .pricing-card ul li {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .pricing-card ul li::before {
+            content: "✔";
+            color: green;
+            margin-right: 8px;
+        }
+
+        .pricing-card button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .pricing-card button:hover {
+            background-color: #0056b3;
+        }
+
+       
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .steps {
+            text-align: left;
+        }
+        .step {
+            margin-bottom: 20px;
+        }
+        .step-title {
+            color: #007bff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .step p {
+            margin: 0;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .grid div {
+            width: 100%;
+            padding-top: 100%; /* Makes the div a square */
+            position: relative;
+        }
+        .grid .blue {
+            background-color: #007bff;
+        }
+        .grid .light-blue {
+            background-color: #58aaff;
+        }
+        .grid .lighter-blue {
+            background-color: #cbeeff;
+        }
+        .grid div::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px dashed white;
+        }
+        .text-column {
+            text-align: left;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #000;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .image-column {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .image-column img {
+            width: 100%;
+            height: auto;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .features-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0 auto 40px auto; /* Centrar y dar espacio inferior */
+            display: inline-block; /* Necesario para que el centrado funcione perfectamente */
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .feature-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centrar contenido horizontalmente */
+            text-align: center; /* Centrar texto */
+        }
+
+        .feature-item:hover {
+            transform: scale(1.05);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007BFF;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            width: 100%; /* Hacer que el título ocupe el ancho del contenedor */
+            
+        }
+
+        .feature-description {
+            background-color: #e8f4ff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        @media (min-width: 600px) {
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+      <!-- Pantalla de carga -->
+      <div class="loading-screen" id="loading-screen">
+        <div class="logo">
+            <!-- Usando un archivo SVG como fuente externa -->
+            <img src="./assets/logo_mentor.svg" alt="Logo Mentor" width="300" height="">
+        </div>
+        <div class="spinner">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+    <header>
+        <div class="logo">
+            <img src="./assets/logo_mentor.svg" alt="Logo" class="logo-img"> 
+        </div>
+        <nav>
+            <ul class="menu">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">How It Works</a></li>
+                <li><a href="#">Pricing</a></li>
+            </ul>
+            <div class="menu-toggle" id="menu-toggle">
+                <span>&#9776;</span> <!-- Ícono del menú hamburguesa -->
+            </div>
+        </nav>
+    </header>
+
+    <section class="main-banner">
+        <div class="text-content">
+            <h1>Impulsa tu carrera con “Tutorías Personalizadas”</h1>
+            <p>Conecta con tutores expertos y aprende de forma práctica, accesible y personalizada.</p>
+            <a href="#" class="cta-btn">Descubre más</a>
+        </div>
+        <img src="./assets/Mentor_Illustration.png" alt="Ilustración de estudiante">
+    </section>
+
+    <div class="container">
+        <h1 class="features-title">Características</h1>
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon">📘</div>
+                <div class="feature-title">TUTORÍAS PERSONALIZADAS</div>
+                <p class="feature-description">
+                    Accede a tutorías adaptadas a tus necesidades y ritmo de aprendizaje, impartidas por expertos en diseño gráfico.
+                </p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🌐</div>
+                <div class="feature-title">TUTORÍAS EN LÍNEA</div>
+                <p class="feature-description">
+                    Toma tus tutorías desde cualquier lugar de manera online.
+                </p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">⏰</div>
+                <div class="feature-title">FLEXIBILIDAD HORARIA</div>
+                <p class="feature-description">
+                    Elige el horario que más te convenga para recibir tus clases sin afectar tus otras actividades académicas.
+                </p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🖥️</div>
+                <div class="feature-title">SOPORTE EN HERRAMIENTAS CLAVES</div>
+                <p class="feature-description">
+                    Aprende a dominar herramientas esenciales como Adobe Photoshop, Illustrator y más.
+                </p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📁</div>
+                <div class="feature-title">ASESORÍA EN PROYECTOS</div>
+                <p class="feature-description">
+                    Recibe apoyo experto en la realización y mejora de tus proyectos de clase.
+                </p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">💲</div>
+                <div class="feature-title">PRECIOS ACCESIBLES</div>
+                <p class="feature-description">
+                    Ofrecemos planes de pago flexibles y accesibles para estudiantes de diseño gráfico.
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="testimonials">
+        <h2>RESEÑAS</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial">
+                <img src="./assets/Estudiante_Anónimo.png" alt="Usuario 1">
+                <p class="university">Universidad ******</p>
+                <p class="user">Usuario 1</p>
+                <div class="stars">★★★★☆</div>
+                <p>"Gracias a esta plataforma, pude mejorar mis habilidades en Illustrator y Photoshop. Los tutores son pacientes y te explican todo de forma clara."</p>
+            </div>
+            <div class="testimonial">
+                <img src="./assets/Estudiante_Anónimo.png" alt="Usuario 2">
+                <p class="university">Universidad ******</p>
+                <p class="user">Usuario 2</p>
+                <div class="stars">★★★★☆</div>
+                <p>"Las tutorías personalizadas me ayudaron a entender el modelado 3D en muy poco tiempo. Definitivamente recomendable para estudiantes de diseño gráfico."</p>
+            </div>
+            <div class="testimonial">
+                <img src="./assets/Estudiante_Anónimo.png" alt="Usuario 3">
+                <p class="university">Universidad ******</p>
+                <p class="user">Usuario 3</p>
+                <div class="stars">★★★★☆</div>
+                <p>"El soporte que ofrecen con las herramientas clave es increíble. Ahora manejo programas que antes me parecían muy complicados."</p>
+            </div>
+            <div class="testimonial">
+                <img src="./assets/Estudiante_Anónimo.png" alt="Usuario 4">
+                <p class="university">Universidad ******</p>
+                <p class="user">Usuario 4</p>
+                <div class="stars">★★★★☆</div>
+                <p>"Una excelente opción para recibir ayuda específica en las materias más difíciles del primer semestre. ¡Me salvó en mis exámenes!"</p>
+            </div>
+        </div>
+    </section>
+
+    <!--Historia-->
+    
+    <div class="container">
+        <!-- Text Column -->
+        <div class="text-column">
+            <h1>HISTORIA</h1>
+            <p>
+                Nuestra startup surgió al identificar una necesidad crucial entre los estudiantes de diseño gráfico de primer semestre. 
+                Muchos de ellos enfrentaban dificultades para dominar asignaturas clave como modelado 3D, Photoshop e Illustrator, 
+                sin contar con el apoyo adecuado para superar estos retos.
+            </p>
+            <p>
+                Al ver esta brecha, un grupo de estudiantes avanzados decidió crear una plataforma que ofreciera tutorías personalizadas, 
+                brindando una solución accesible y especializada para los nuevos estudiantes que buscan mejorar sus habilidades y avanzar con confianza en su carrera.
+            </p>
+        </div>
+
+        <!-- Image Column -->
+        <div class="image-column">
+            <img src="./assets/HISTORIA.png" alt="Imagen de ejemplo">
+        </div>
+    </div>
+
+
+    <!--Nuestro Equipo-->  
+    <section class="team">
+        <h2>Nuestro Equipo</h2>
+        <div class="team-grid">
+            <div class="team-card">
+                <img src="./assets/Miembro 1.jpg" alt="Foto del tutor 1">
+                <h3>José Fernando</h3>
+                <p>Tutor y Estudiante en Progreso.</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com" target="_blank">
+                      <img src="./assets/Linkedin.png" alt="LinkedIn" class="social-icon">
+                    </a>
+                    <a href="https://www.twitter.com" target="_blank">
+                      <img src="./assets/twitter.svg" alt="Twitter" class="social-icon">
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank">
+                      <img src="./assets/Instagram.svg" alt="Instagram" class="social-icon">
+                    </a>
+                    <a href="https://www.facebook.com" target="_blank">
+                      <img src="./assets/facebook.svg" alt="Facebook" class="social-icon">
+                    </a>
+                </div>                  
+                  
+            </div>
+            
+            <div class="team-card">
+                <img src="./assets/Miembro 3.jpg" alt="Foto del tutor 3">
+                <h3>Alejandra Coimbra</h3>
+                <p>Tutor y Estudiante en Progreso.</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com" target="_blank">
+                      <img src="./assets/Linkedin.png" alt="LinkedIn" class="social-icon">
+                    </a>
+                    <a href="https://www.twitter.com" target="_blank">
+                      <img src="./assets/twitter.svg" alt="Twitter" class="social-icon">
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank">
+                      <img src="./assets/Instagram.svg" alt="Instagram" class="social-icon">
+                    </a>
+                    <a href="https://www.facebook.com" target="_blank">
+                      <img src="./assets/facebook.svg" alt="Facebook" class="social-icon">
+                    </a>
+                </div>   
+            </div>
+            <div class="team-card">
+                <img src="./assets/Miembro 4.jpg" alt="Foto del tutor 4">
+                <h3>Alejandro Miranda</h3>
+                <p>Tutor y Estudiante en Progreso.</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com" target="_blank">
+                      <img src="./assets/Linkedin.png" alt="LinkedIn" class="social-icon">
+                    </a>
+                    <a href="https://www.twitter.com" target="_blank">
+                      <img src="./assets/twitter.svg" alt="Twitter" class="social-icon">
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank">
+                      <img src="./assets/Instagram.svg" alt="Instagram" class="social-icon">
+                    </a>
+                    <a href="https://www.facebook.com" target="_blank">
+                      <img src="./assets/facebook.svg" alt="Facebook" class="social-icon">
+                    </a>
+                </div>   
+            </div>
+            <div class="team-card">
+                <img src="./assets/Miembro 5.png" alt="Foto del tutor 5">
+                <h3>Geovanna Lopez</h3>
+                <p>Tutor y Estudiante en Progreso.</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com" target="_blank">
+                      <img src="./assets/Linkedin.png" alt="LinkedIn" class="social-icon">
+                    </a>
+                    <a href="https://www.twitter.com" target="_blank">
+                      <img src="./assets/twitter.svg" alt="Twitter" class="social-icon">
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank">
+                      <img src="./assets/Instagram.svg" alt="Instagram" class="social-icon">
+                    </a>
+                    <a href="https://www.facebook.com" target="_blank">
+                      <img src="./assets/facebook.svg" alt="Facebook" class="social-icon">
+                    </a>
+                </div>   
+            </div>
+        </div>
+    </section>
+
+    <section class="mission-vision">
+        <!-- Título principal de la sección -->
+        <h2>MISIÓN Y VISIÓN</h2>
+    
+        <!-- Contenedor principal que agrupa misión y visión -->
+        <div class="mission-vision-content">
+    
+            <!-- Sección de Misión -->
+            <div class="mission">
+                <h3>Misión</h3>
+                 <!-- Descripción de la misión -->
+                <p> Proporcionar a los estudiantes de diseño gráfico
+                    del primer semestre tutorías asequibles y de alta
+                    calidad, impartidas por estudiantes avanzados o
+                    profesionales del área. Buscamos facilitar el
+                    aprendizaje de las herramientas y asignaturas
+                    clave, creando una comunidad de apoyo que
+                    promueva el crecimiento y la excelencia en el
+                    ámbito del diseño.</p>
+            </div>
+    
+            <!-- Sección de Visión -->
+            <div class="vision">
+                <h3>Visión</h3>
+                <p>
+                    <!-- Descripción de la visión -->
+                    Ser la plataforma líder en tutorías personalizadas para estudiantes de diseño gráfico, ofreciendo un soporte accesible y especializado que impulse su éxito académico y profesional en toda la región.
+                </p>
+            </div>
+    
+        </div>
+    </section>
+    <!--How it works?-->
+
+    <div class="container">
+        <!-- Text Column -->
+        <div class="text-column">
+            <h1>¿Cómo funciona?</h1>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-title">1. Regístrate en la plataforma</div>
+                    <p>Crea tu cuenta en pocos pasos. Solo necesitas tu nombre, correo electrónico y carrera universitaria.</p>
+                </div>
+                <div class="step">
+                    <div class="step-title">2. Explora las asignaturas disponibles</div>
+                    <p>Accede a un listado de materias clave como modelado 3D, Photoshop, Illustrator y más. Elige la materia en la que necesitas apoyo.</p>
+                </div>
+                <div class="step">
+                    <div class="step-title">3. Elige tu tutor</div>
+                    <p>Navega por los perfiles de tutores especializados en la asignatura que seleccionaste. Puedes ver su experiencia y reseñas para tomar la mejor decisión.</p>
+                </div>
+                <div class="step">
+                    <div class="step-title">4. Programa tu sesión</div>
+                    <p>Selecciona el día y la hora que mejor se adapten a tu horario. Recibirás un recordatorio antes de la sesión.</p>
+                </div>
+                <div class="step">
+                    <div class="step-title">5. Aprende y mejora</div>
+                    <p>Conéctate con tu tutor en la plataforma, ya sea de forma virtual o presencial. Aprovecha la clase para resolver tus dudas y avanzar en tus proyectos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Column -->
+        <div class="image-column">
+            <img src="./assets/COMO_FUNCIONA.png" alt="Example Image">
+            </div>
+        </div>
+
+    <!--Precios--> <!-- Encabezado -->
+   
+    <div class="pricing-header">PRECIOS</div>
+
+    <!-- Contenedor de tarjetas -->
+    <div class="pricing-container">
+        <!-- Tarjeta Plan Básico -->
+        <div class="pricing-card">
+            <h2>Plan Regular</h2>
+            <h3 class="soon">Mensual</h3>
+            <div class="price">Bs 210</div>
+            <p>Cada clase Personalizada</p>
+            <ul>
+                <li>2 Clases por Semana</li>
+                <li>Clases Online</li>
+                <li>Tutoría Personalizada</li>
+                <li>Material Didáctico Digital</li>
+            </ul>
+            <button>Get Started</button>
+        </div>
+    </div>
+    <!--Empieza Hoy-->
+    <body>
+        <div class="container">
+            <!-- Columna de texto -->
+            <div class="text-column">
+                <h1>¡Empieza Hoy!</h1>
+                <p>
+                    No pierdas la oportunidad de mejorar tus habilidades en diseño gráfico con el apoyo de tutores especializados. 
+                    Ya sea que necesites ayuda con Photoshop, Illustrator o modelado 3D, tenemos un plan para ti. 
+                    Únete ahora y da el siguiente paso en tu formación.
+                </p>
+                <form>
+                    <input type="email" placeholder="Enter your email address" required>
+                    <button type="submit">Solicita Una Demo</button>
+                </form>
+            </div>
+            <!-- Columna del ícono -->
+            <div class="icon-column">
+                <img src="./assets/Descuento.svg" alt="Icono de descuento">
+            </div>
+        </div>
+     <!-- Pie de página -->
+     <footer>
+        <p>Mentor © 2024. Todos los derechos Reservados.</p>
+        <div class="social-icons">
+            <a href="#">YouTube</a>
+            <a href="#">Facebook</a>
+            <a href="#">Twitter</a>
+            <a href="#">Instagram</a>
+            <a href="#">LinkedIn</a>
+        </div>
+    </footer>
+     <!-- Script para el menú hamburguesa -->
+     <script>
+        
+         // Ocultar la pantalla de carga después de 5 segundos
+         window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden');
+                document.getElementById('main-content').style.display = 'block';
+                // Restaurar scroll si es necesario
+                document.body.style.overflow = 'auto';
+            }, 1000); // 3 segundos
+        });
+
+        const menuToggle = document.getElementById("menu-toggle");
+        const menu = document.querySelector(".menu");
+
+        menuToggle.addEventListener("click", () => {
+            menu.classList.toggle("active");
+        });
+    </script>
+</body>
+</html>
